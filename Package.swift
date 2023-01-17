@@ -26,11 +26,6 @@ let package = Package(
         .package(url: "https://github.com/apple/swift-nio-ssl.git", from: "2.17.2"),
     ],
     targets: [
-        .executableTarget(name: "Example", dependencies: [
-            "WebSocket",
-            "AsyncAwaitSupport",
-            .product(name: "ArgumentParser", package: "swift-argument-parser"),
-        ]),
         .target(name: "AsyncAwaitSupport", dependencies: [
             "WebSocket",
         ]),

@@ -11,9 +11,7 @@ import NIOSSL
 import NIOWebSocket
 
 public extension WebSocket {
-    static func client(connect address: ServerAddress,
-                       configuration: Configuration = .init())
-        -> WebSocket? {
+    static func client(connect address: ServerAddress, configuration: Configuration = .init()) throws -> WebSocket {
         let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: configuration.numberOfThreads)
 
         let promise: EventLoopPromise<WebSocket> = eventLoopGroup.next().makePromise()
@@ -92,7 +90,7 @@ public extension WebSocket {
         }
         connect.cascadeFailure(to: upgradePromise)
         connect.cascadeFailure(to: promise)
-        let websocket = try? connect.flatMap { _ in
+        let websocket = try connect.flatMap { _ in
             promise.futureResult
         }.wait()
 
