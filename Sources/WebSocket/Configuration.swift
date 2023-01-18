@@ -69,19 +69,16 @@ public enum ServerAddress {
 public struct Configuration {
     public var tlsConfiguration: TLSConfiguration?
     public var maxFrameSize: Int
-    public var numberOfThreads: Int
-    public var pingInterval: TimeAmount?
+    public var pingInterval:TimeAmount
     public var headers: HTTPHeaders
 
     public init(tlsConfiguration: TLSConfiguration? = nil,
                 maxFrameSize: Int = 1 << 14,
-                numberOfThreads: Int = System.coreCount,
-                pingInterval: TimeAmount? = nil,
+                pingInterval: TimeAmount = .seconds(45),
                 headers: HTTPHeaders = [:]) {
         self.pingInterval = pingInterval
         self.tlsConfiguration = tlsConfiguration
         self.maxFrameSize = maxFrameSize
-        self.numberOfThreads = numberOfThreads
         self.headers = headers
     }
 }

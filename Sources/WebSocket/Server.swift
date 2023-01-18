@@ -9,11 +9,8 @@ import NIOPosix
 import NIOWebSocket
 
 public extension WebSocket {
-    static func server(listen address: ListeningAddress,
-                       configuration: Configuration = .init(),
-                       onConnection: @escaping (HTTPRequestHead, WebSocket) -> Void) {
-        let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: configuration.numberOfThreads)
-        let bootstrap = ServerBootstrap(group: eventLoopGroup)
+    static func server(listen address:ListeningAddress, eventLoopGroup:MultiThreadedEventLoopGroup, configuration:Configuration = .init(), onConnection:@escaping(HTTPRequestHead, WebSocket) -> Void) {
+        let bootstrap = ServerBootstrap(group:eventLoopGroup)
             .serverChannelOption(ChannelOptions.backlog, value: 256)
             .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
             .childChannelInitializer { channel in

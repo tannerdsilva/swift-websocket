@@ -11,9 +11,7 @@ import NIOSSL
 import NIOWebSocket
 
 public extension WebSocket {
-    static func client(connect address: ServerAddress, configuration: Configuration = .init()) throws -> WebSocket {
-        let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: configuration.numberOfThreads)
-
+    static func client(connect address:ServerAddress, eventLoopGroup:MultiThreadedEventLoopGroup, configuration:Configuration = .init()) throws -> WebSocket {
         let promise: EventLoopPromise<WebSocket> = eventLoopGroup.next().makePromise()
         let upgradePromise = eventLoopGroup.next().makePromise(of: Void.self)
 
