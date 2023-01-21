@@ -7,8 +7,8 @@ import Foundation
 import NIOFoundationCompat
 import NIOWebSocket
 
-final class WebSocketChannel {
-    let channel: Channel
+final public class WebSocketChannel {
+    public let channel: Channel
     let type: PeerType
     var waitingForClose: Bool
 

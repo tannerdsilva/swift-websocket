@@ -18,7 +18,7 @@ public final class WebSocket {
         }
     }
 
-    private let channel: WebSocketChannel
+    public let channel: WebSocketChannel
     private var onTextCallback: (WebSocket, String) -> Void
     private var onBinaryCallback: (WebSocket, ByteBuffer) -> Void
     private var frameSequence: WebSocketFrameSequence?
