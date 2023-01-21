@@ -9,11 +9,8 @@ import NIOPosix
 import NIOWebSocket
 
 public extension WebSocket {
-    static func server(listen address: ListeningAddress,
-                       configuration: Configuration = .init(),
-                       onConnection: @escaping (HTTPRequestHead, WebSocket) -> Void) {
-        let eventLoopGroup = MultiThreadedEventLoopGroup(numberOfThreads: configuration.numberOfThreads)
-        let bootstrap = ServerBootstrap(group: eventLoopGroup)
+    static func server(listen address:ListeningAddress, eventLoopGroup:MultiThreadedEventLoopGroup, configuration:Configuration = .init(), onConnection:@escaping(HTTPRequestHead, WebSocket) -> Void) throws -> Channel {
+        let bootstrap = ServerBootstrap(group:eventLoopGroup)
             .serverChannelOption(ChannelOptions.backlog, value: 256)
             .serverChannelOption(ChannelOptions.socketOption(.so_reuseaddr), value: 1)
             .childChannelInitializer { channel in
@@ -50,12 +47,6 @@ public extension WebSocket {
             case let .unixDomainSocket(path: path):
                 bind = bootstrap.bind(unixDomainSocketPath: path, cleanupExistingSocketFile: true)
         }
-        if let channel = try? bind.wait() {
-            if let port = channel.localAddress?.port {
-                log("listening on port \(port)")
-            }
-            try? channel.closeFuture.wait()
-            log("stop listening")
-        }
+		return try bind.wait()
     }
 }
